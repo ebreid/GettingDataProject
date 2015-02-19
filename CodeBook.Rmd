@@ -1,0 +1,138 @@
+#UCI HCR Project Codebook
+##Introduction
+This codebook describes the data, transformations, clean up, and variables involved in completing the Getting and Cleaning Data course project. In summary, the project uses the UCI HAR data set to produce a tidy data set consisting of means computed for a subset of measurements collected for each of 30 subjects completing each of 6 activities.
+
+##Data
+The UCI HCR data set is downloadable at https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+
+For the purposes of this analysis, the following files from the data set are needed:
+
+* activity_labels.txt
+* features.txt
+* /test/subject_test.txt
+* /test/X_test.txt
+* /test/y_test.txt
+* /train/subject_train.txt
+* /train/X_train.txt
+* /train/y_train.txt
+
+##Transformations
+###Merge
+The run\_analysis.R script included in this repository merges the aforementioned files into a single data frame. After the data are imported into R as data frames, the `x_test` and `x_train`, `y_test` and `y_train`, and `subject_test` and `subject_train` data frames are clipped together using `rbind()`, into new data frames named `x`, `y`, and `subject`, respectively.
+
+Data frame `x` consists of 10,299 observations of 561 measurements collected during six activities performed by 30 subjects.
+
+Data frame `y` consists of 10,299 numeric codes corresponding to the activities performed.
+
+Data frame `subject` consists of 10,299 codes that correspond to subjects who completed the activities.
+
+The `features` data frame contains the variable names that correspond to data frame `x`. run\_analysis.R changes the column names in `x` to the names specified in `features`.
+
+`subject`, `x`, and `y` are combined into a singe data frame using `cbind()`. Readable activity names are assigned to each of the activity codes from data frame `y` by merging the new data frame with `activity_labels`.
+
+###Extraction of relevant data
+The script extracts the mean and standard deviation measurements from the data frame (as well as the subject and activity columns). For the purposes of this project, any column name containing "mean" or "std" is considered to indicate that the measurements are mean or standard deviation measurements.
+
+###Clean Up
+The script does some clean up of the column names to make them "legal" in R (parentheses, commas, and hyphens are removed), to correct an error in some of the variable names that appeared in features.txt (duplication of "Body" in some of the names), and to adjust capitalization to make the variable names easy to read.
+
+###Production of final tidy data set
+The script creates a tidy data set containing the mean of each extracted mean and standard deviation measurement for each activity completed by each subject. The means are calculated using `melt` and `dcast` functions from the reshape2 package.
+
+The final data set is considered tidy because each measured variable is in one column, each observation is in one row, and all of the variables are contained in a single table. 
+
+##Variables
+subject  
+Integer between 1 and 30 that identifies the subject.
+
+activityName  
+Name of the activity performed. Possible values are WALKING, WALKING\_UPSTAIRS, WALKING\_DOWNSTAIRS, SITTING, STANDING, LAYING
+
+The remaining variables are means of the mean and standard deviation measurements contained in the original data set. They are continuous variables between -1 and 1. See features_info.txt from the original data set for further information.
+
+tBodyAccMeanX  
+tBodyAccMeanY  
+tBodyAccMeanZ  
+tBodyAccStdX  
+tBodyAccStdY  
+tBodyAccStdZ  
+tGravityAccMeanX  
+tGravityAccMeanY  
+tGravityAccMeanZ  
+tGravityAccStdX  
+tGravityAccStdY  
+tGravityAccStdZ  
+tBodyAccJerkMeanX  
+tBodyAccJerkMeanY  
+tBodyAccJerkMeanZ  
+tBodyAccJerkStdX  
+tBodyAccJerkStdY  
+tBodyAccJerkStdZ  
+tBodyGyroMeanX  
+tBodyGyroMeanY  
+tBodyGyroMeanZ  
+tBodyGyroStdX  
+tBodyGyroStdY  
+tBodyGyroStdZ  
+tBodyGyroJerkMeanX  
+tBodyGyroJerkMeanY  
+tBodyGyroJerkMeanZ  
+tBodyGyroJerkStdX  
+tBodyGyroJerkStdY  
+tBodyGyroJerkStdZ  
+tBodyAccMagMean  
+tBodyAccMagStd  
+tGravityAccMagMean  
+tGravityAccMagStd  
+tBodyAccJerkMagMean  
+tBodyAccJerkMagStd  
+tBodyGyroMagMean  
+tBodyGyroMagStd  
+tBodyGyroJerkMagMean  
+tBodyGyroJerkMagStd  
+fBodyAccMeanX  
+fBodyAccMeanY  
+fBodyAccMeanZ  
+fBodyAccStdX  
+fBodyAccStdY  
+fBodyAccStdZ  
+fBodyAccMeanFreqX  
+fBodyAccMeanFreqY  
+fBodyAccMeanFreqZ  
+fBodyAccJerkMeanX  
+fBodyAccJerkMeanY  
+fBodyAccJerkMeanZ  
+fBodyAccJerkStdX  
+fBodyAccJerkStdY  
+fBodyAccJerkStdZ  
+fBodyAccJerkMeanFreqX  
+fBodyAccJerkMeanFreqY  
+fBodyAccJerkMeanFreqZ  
+fBodyGyroMeanX  
+fBodyGyroMeanY  
+fBodyGyroMeanZ  
+fBodyGyroStdX  
+fBodyGyroStdY  
+fBodyGyroStdZ  
+fBodyGyroMeanFreqX  
+fBodyGyroMeanFreqY  
+fBodyGyroMeanFreqZ  
+fBodyAccMagMean  
+fBodyAccMagStd  
+fBodyAccMagMeanFreq  
+fBodyAccJerkMagMean  
+fBodyAccJerkMagStd  
+fBodyAccJerkMagMeanFreq  
+fBodyGyroMagMean  
+fBodyGyroMagStd  
+fBodyGyroMagMeanFreq  
+fBodyGyroJerkMagMean  
+fBodyGyroJerkMagStd  
+fBodyGyroJerkMagMeanFreq  
+angletBodyAccMeanGravity  
+angletBodyAccJerkMeanGravityMean  
+angletBodyGyroMeanGravityMean  
+angletBodyGyroJerkMeanGravityMean  
+angleXGravityMean  
+angleYGravityMean  
+angleZGravityMean  
